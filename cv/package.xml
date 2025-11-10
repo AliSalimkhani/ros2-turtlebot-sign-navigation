@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>cv</name>
+  <version>0.0.1</version>
+  <description>Computer vision package for traffic sign control</description>
+  <maintainer email="alisalimkhani2004@gmail.com">ali</maintainer>
+  <license>Apache License 2.0</license>
+
+  <!-- EXECUTION DEPENDENCIES -->
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>cv_bridge</exec_depend>
+  <exec_depend>image_transport</exec_depend>
+  <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+
+  <!-- TEST DEPENDENCIES -->
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <!-- BUILD TYPE -->
+  <export>
+    <build_type>ament_python</build_type>  
+  </export>
+</package>

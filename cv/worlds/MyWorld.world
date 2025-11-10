@@ -1,0 +1,27 @@
+<world name="my_world">
+
+  <!-- Ground plane and sun -->
+  <include>
+    <uri>model://ground_plane</uri>
+  </include>
+  <include>
+    <uri>model://sun</uri>
+  </include>
+
+  <!-- Traffic signs -->
+  <include>
+    <uri>model://traffic_right</uri>
+    <pose>1.08 -0.728 0.125 0 0 -1.57</pose>
+  </include>
+
+  <include>
+    <uri>model://traffic_pl_left</uri>
+    <pose>0.50 1.90 0.13 0 0 0</pose>
+  </include>
+
+  <include>
+    <uri>model://traffic_stop</uri>
+    <pose>-1.35 1.04 0.125 0 0 -1.57</pose>
+  </include>
+
+</world>
