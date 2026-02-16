@@ -8,17 +8,17 @@ class Controller(Node):
     def __init__(self):
         super().__init__('controller')
 
-        # --- State Machine ---
-        self.state = 'READY'  # States: READY, WAITING, TURNING, STOPPING
+        
+        self.state = 'READY'  
         self.pending_command = None
         self.command_received_time = 0.0
         self.turn_start_time = 0.0
 
-        # --- Timing Parameters ---
-        self.maneuver_delay = 3.0  # Seconds to wait after seeing a sign
-        self.turn_duration = 1.0    # Seconds to perform the actual turn
+       
+        self.maneuver_delay = 3.0  
+        self.turn_duration = 1.0    
 
-        # --- Subscriber and Publisher ---
+        
         self.subscription = self.create_subscription(
             String,
             '/command',
@@ -27,21 +27,20 @@ class Controller(Node):
         )
         self.publisher = self.create_publisher(Twist, '/cmd_vel', 10)
 
-        # --- Timer for the main logic ---
+        
         self.timer = self.create_timer(0.1, self.timer_callback)
         
         self.get_logger().info("Controller node started. State: READY")
 
     def control_callback(self, msg):
         """Receives a command and processes it based on current state."""
-        # Always accept STOP commands regardless of state
         if msg.data == "STOP":
             self.get_logger().info(f"STOP command received. Moving to STOPPING state.")
             self.state = 'STOPPING'
             self.pending_command = msg.data
             return
             
-        # Only accept other commands when in READY state
+        
         if self.state != 'READY':
             self.get_logger().info(f"Ignoring command '{msg.data}', not in READY state.")
             return
@@ -56,12 +55,11 @@ class Controller(Node):
         twist = Twist()
 
         if self.state == 'READY':
-            # Default behavior: move forward
+            
             twist.linear.x = 0.3
             self.publisher.publish(twist)
 
         elif self.state == 'WAITING':
-            # Wait for the delay period, continuing to move
             twist.linear.x = 0.1
             self.publisher.publish(twist)
 
@@ -71,7 +69,6 @@ class Controller(Node):
                 self.turn_start_time = time.time()
 
         elif self.state == 'TURNING':
-            # Execute the turn for a specific duration
             if self.pending_command == "LEFT":
                 twist.angular.z = 1.5
             elif self.pending_command == "RIGHT":
@@ -84,7 +81,6 @@ class Controller(Node):
                 self.state = 'STOPPING'
 
         elif self.state == 'STOPPING':
-            # Send a stop command and reset to READY
             twist.linear.x = 0.0
             twist.angular.z = 0.0
             self.publisher.publish(twist)
@@ -94,7 +90,6 @@ class Controller(Node):
             self.pending_command = None
 
     def destroy_node(self):
-        # Ensure robot is stopped on shutdown
         stop_twist = Twist()
         self.publisher.publish(stop_twist)
         super().destroy_node()
