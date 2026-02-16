@@ -19,7 +19,7 @@ def generate_launch_description():
 
     world_file = os.path.join(pkg_cv, 'worlds', 'MyWorld.world')
 
-    # Gazebo server and client
+
     gzserver_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_gazebo_ros, 'launch', 'gzserver.launch.py')
@@ -32,7 +32,7 @@ def generate_launch_description():
         )
     )
 
-    # Robot state publisher
+    
     urdf_file = os.path.join(pkg_turtlebot3_description, 'urdf', 'turtlebot3_waffle_pi.urdf')
     with open(urdf_file, 'r') as f:
         robot_desc = f.read()
@@ -44,7 +44,7 @@ def generate_launch_description():
         parameters=[{'robot_description': robot_desc}, {'use_sim_time': use_sim_time}]
     )
 
-    # Spawn TurtleBot
+
     spawn_turtlebot = Node(
         package='gazebo_ros',
         executable='spawn_entity.py',
@@ -54,7 +54,7 @@ def generate_launch_description():
         output='screen'
     )
 
-    # --- CORRECTED: Spawn traffic signs with unique variables and correct model paths ---
+    
     spawn_traffic_right = Node(
         package='gazebo_ros',
         executable='spawn_entity.py',
@@ -73,7 +73,7 @@ def generate_launch_description():
         output='screen'
     )
 
-    spawn_traffic_stop = Node( # <-- UNIQUE NAME
+    spawn_traffic_stop = Node( 
         package='gazebo_ros',
         executable='spawn_entity.py',
         arguments=['-entity', 'traffic_stop',
@@ -82,7 +82,7 @@ def generate_launch_description():
         output='screen'
     )
 
-    # Sign detector node
+    
     sign_detector_node = Node(
         package='sign_detector',
         executable='detector_node',
@@ -91,7 +91,7 @@ def generate_launch_description():
         parameters=[{'use_sim_time': use_sim_time}]
     )
 
-    # Controller node
+    
     controller_node = Node(
         package='cv',
         executable='controller',
@@ -100,7 +100,7 @@ def generate_launch_description():
         parameters=[{'use_sim_time': use_sim_time}]
     )
 
-    # --- CORRECTED: Add all three spawn nodes to the return list ---
+    
     return LaunchDescription([
         DeclareLaunchArgument('use_sim_time', default_value='true'),
         DeclareLaunchArgument('x_pose', default_value='0.0'),
@@ -110,8 +110,8 @@ def generate_launch_description():
         robot_state_publisher,
         spawn_turtlebot,
         spawn_traffic_right,
-        spawn_traffic_left, # <-- ADDED
-        spawn_traffic_stop, # <-- ADDED
+        spawn_traffic_left, 
+        spawn_traffic_stop, 
         sign_detector_node,
         controller_node
     ])
